@@ -57,3 +57,15 @@ export function getRandomFish(): Fish | null {
 
     return null
 }
+
+export function add(fish: Fish) {
+    fish.amount++
+    update()
+}
+
+function update() {
+    for(const fish of fishes) {
+        const amount = document.getElementById(`${fish.name}-amount`)!
+        amount.textContent = `${fish.icon} ${fish.amount}`
+    }
+}

@@ -1,4 +1,4 @@
-import { initialize as initializeFish, getRandomFish } from "./fish"
+import { initialize as initializeFish, getRandomFish, add } from "./fish"
 
 initializeFish()
 
@@ -7,5 +7,9 @@ const message = document.getElementById('caught-message') as HTMLParagraphElemen
 
 btnFish.onclick = () => {
     let fish = getRandomFish()
+
+    if(fish)
+        add(fish)
+    
     message.textContent = `You caught: ${fish?.icon ?? 'nothing 😔'}`
 }
