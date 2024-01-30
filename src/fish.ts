@@ -36,3 +36,24 @@ export function initialize() {
     sellAllBtn.textContent = 'Sell All'
     fishesSection?.appendChild(sellAllBtn)
 }
+
+export function getRandomFish(): Fish | null {
+    const distribution = fishes.map((fish, index) => {
+        const distributedIndex = [
+            ...Array<number | null>(fish.probablity).fill(index)
+        ]
+        return distributedIndex
+    })
+
+    const flatDistribution = distribution.flat()
+
+    const missedProbability = distribution.length
+    flatDistribution.push(...Array<number | null>(missedProbability).fill(null))
+
+    const fishIndex = flatDistribution[Math.floor(Math.random() * flatDistribution.length)]
+
+    if(fishIndex != null)
+        return fishes[fishIndex]
+
+    return null
+}

@@ -10,11 +10,12 @@ body {
   white-space: nowrap;
   background-color: #212121;
   padding: 16px;
-
+  color: var(--color-black);
 }
 
-#title {
-  color: #444444;
+#caught-message {
+  font-size: 18px;
+  width: fit-content;
 }
 
 #console {
