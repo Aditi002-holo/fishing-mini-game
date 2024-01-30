@@ -13,6 +13,10 @@ body {
 
 }
 
+#title {
+  color: #444444;
+}
+
 #console {
   padding: 32px;
   max-width: 748px;
