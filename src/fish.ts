@@ -1,15 +1,15 @@
 type Fish = {
     name: string,
     icon: string,
-    amount: number,
+    count: number,
     value: number,
     probablity: number
 }
 
 const fishes: Fish[] = [
-    {name: 'boot', icon: '🥾', amount: 0, value: 1, probablity: 4},
-    {name: 'fish', icon: '🐟', amount: 0, value: 5, probablity: 4},
-    {name: 'tropical', icon: '🐠', amount: 0, value: 10, probablity: 2}
+    {name: 'boot', icon: '🥾', count: 0, value: 1, probablity: 4},
+    {name: 'fish', icon: '🐟', count: 0, value: 5, probablity: 4},
+    {name: 'tropical', icon: '🐠', count: 0, value: 10, probablity: 2}
 ]
 
 export function initialize() {
@@ -19,14 +19,14 @@ export function initialize() {
         const container = document.createElement('div')
         container.className = 'fish-item'
 
-        const amount = document.createElement('span')
-        amount.id = `${fish.name}-amount`
-        amount.textContent = `${fish.icon} ${fish.amount}`
+        const count = document.createElement('span')
+        count.id = `${fish.name}-count`
+        count.textContent = `${fish.icon} ${fish.count}`
 
         const price = document.createElement('span')
         price.textContent = `x $${fish.value}`
 
-        container.appendChild(amount)
+        container.appendChild(count)
         container.appendChild(price)
 
         fishesSection?.appendChild(container)
@@ -34,6 +34,13 @@ export function initialize() {
 
     const sellAllBtn = document.createElement('button')
     sellAllBtn.textContent = 'Sell All'
+    sellAllBtn.onclick = () => {
+        for(const fish of fishes) {
+            fish.count = 0
+        }
+
+        update()
+    }
     fishesSection?.appendChild(sellAllBtn)
 }
 
@@ -59,13 +66,13 @@ export function getRandomFish(): Fish | null {
 }
 
 export function add(fish: Fish) {
-    fish.amount++
+    fish.count++
     update()
 }
 
 function update() {
     for(const fish of fishes) {
-        const amount = document.getElementById(`${fish.name}-amount`)!
-        amount.textContent = `${fish.icon} ${fish.amount}`
+        const count = document.getElementById(`${fish.name}-count`)!
+        count.textContent = `${fish.icon} ${fish.count}`
     }
 }
