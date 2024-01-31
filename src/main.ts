@@ -56,7 +56,7 @@ function updateState(): void {
             navGoShopping.style.display = 'block';
             navGoFishing.style.display = 'none';
             baitManager.enableButtons('select');
-            imgState.src = "lake.png";
+            imgState.src = "../public/lake.png";
             title.textContent = '🎣 Fishing'
 
             break;
@@ -65,7 +65,7 @@ function updateState(): void {
             navGoFishing.style.display = 'block';
             navGoShopping.style.display = 'none';
             baitManager.enableButtons('buy');
-            imgState.src = "market.png";
+            imgState.src = "../public/market.png";
             title.textContent = '🛒 Market'
 
             break;
