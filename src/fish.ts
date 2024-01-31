@@ -1,78 +1,88 @@
-type Fish = {
+import Wallet from "./wallet";
+
+export type Fish = {
     name: string,
     icon: string,
-    count: number,
+    amount: number,
     value: number,
-    probablity: number
+    probability: number
 }
 
 const fishes: Fish[] = [
-    {name: 'boot', icon: '🥾', count: 0, value: 1, probablity: 4},
-    {name: 'fish', icon: '🐟', count: 0, value: 5, probablity: 4},
-    {name: 'tropical', icon: '🐠', count: 0, value: 10, probablity: 2}
+    { name: 'boot', icon: '🥾', amount: 0, value: 1, probability: 4 },
+    { name: 'fish', icon: '🐟', amount: 0, value: 5, probability: 4 },
+    { name: 'tropical', icon: '🐠', amount: 0, value: 10, probability: 2 }
 ]
 
 export function initialize() {
-    const fishesSection = document.getElementById('fish')
+    const fishesSection = document.getElementById('fish')!;
 
-    for(const fish of fishes) {
-        const container = document.createElement('div')
-        container.className = 'fish-item'
+    for (const fish of fishes) {
+        const container = document.createElement('div');
+        container.className = 'fish-item';
 
-        const count = document.createElement('span')
-        count.id = `${fish.name}-count`
-        count.textContent = `${fish.icon} ${fish.count}`
+        const amount = document.createElement('span');
+        amount.id = `${fish.name}-amount`;
+        const price = document.createElement('span');
+        price.innerHTML = ` x $${fish.value}`;
 
-        const price = document.createElement('span')
-        price.textContent = `x $${fish.value}`
-
-        container.appendChild(count)
-        container.appendChild(price)
-
-        fishesSection?.appendChild(container)
+        container.appendChild(amount);
+        container.appendChild(price);
+        fishesSection.appendChild(container);
     }
 
-    const sellAllBtn = document.createElement('button')
-    sellAllBtn.textContent = 'Sell All'
-    sellAllBtn.onclick = () => {
-        for(const fish of fishes) {
-            fish.count = 0
-        }
+    const sellAllBtn = document.createElement('button');
+    sellAllBtn.innerHTML = 'Sell all';
+    sellAllBtn.onclick = sellAll;
 
-        update()
-    }
-    fishesSection?.appendChild(sellAllBtn)
+    fishesSection.appendChild(sellAllBtn);
+
+    update();
 }
 
 export function getRandomFish(): Fish | null {
-    const distribution = fishes.map((fish, index) => {
-        const distributedIndex = [
-            ...Array<number | null>(fish.probablity).fill(index)
-        ]
-        return distributedIndex
-    })
 
-    const flatDistribution = distribution.flat()
+    // Distribute fish according to their probability.
+    const distribution = fishes.map((f, index) => {
+        const distributedIndex = [...Array<number | null>(f.probability).fill(index)];
+        return distributedIndex;
+    });
 
-    const missedProbability = distribution.length
-    flatDistribution.push(...Array<number | null>(missedProbability).fill(null))
+    const flatDistribution = distribution.flat();
 
-    const fishIndex = flatDistribution[Math.floor(Math.random() * flatDistribution.length)]
+    // Add null for missed attempts.
+    const missedAttemptsProbability = distribution.length;
+    flatDistribution.push(...Array<number | null>(missedAttemptsProbability).fill(null));
 
-    if(fishIndex != null)
-        return fishes[fishIndex]
+    // Get random fish from distribution.
+    const fishIndex = flatDistribution[Math.floor(Math.random() * flatDistribution.length)];
 
-    return null
+    if (fishIndex != null)
+        return fishes[fishIndex];
+
+    return null;
 }
 
 export function add(fish: Fish) {
-    fish.count++
-    update()
+    fish.amount++;
+    update();
 }
 
 function update() {
-    for(const fish of fishes) {
-        const count = document.getElementById(`${fish.name}-count`)!
-        count.textContent = `${fish.icon} ${fish.count}`
+    for (const fish of fishes) {
+        const amount = document.getElementById(`${fish.name}-amount`)!;
+        amount.innerHTML = `${fish.icon} ${fish.amount}`
     }
 }
+
+function sellAll() {
+    let earnings = 0;
+    for (const fish of fishes) {
+        earnings += fish.value * fish.amount;
+        fish.amount = 0;
+    }
+
+    Wallet.add(earnings);
+    update();
+}
+
